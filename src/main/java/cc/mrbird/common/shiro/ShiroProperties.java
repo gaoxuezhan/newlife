@@ -11,9 +11,9 @@ public class ShiroProperties {
 
     private String anonUrl;
 
-    private String loginUrl = "/login";
+    private String loginUrl = "/login_test";
 
-    private String successUrl = "/index";
+    private String successUrl = "/index_test";
 
     private String logoutUrl = "/logout";
 

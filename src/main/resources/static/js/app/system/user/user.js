@@ -39,7 +39,7 @@ $(function () {
             }
         }, {
             field: 'crateTime',
-            title: '创建时间'
+            title: '创建时间321'
         }, {
             field: 'status',
             title: '状态',

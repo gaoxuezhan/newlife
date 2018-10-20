@@ -169,7 +169,7 @@ febs:
     # 登录 url
     loginUrl: /login_test
     # 登录成功后跳转的 url
-    successUrl: /index
+    successUrl: /index_test
     # 登出 url
     logoutUrl: /logout
     # 未授权跳转 url
@@ -177,7 +177,7 @@ febs:
   # 时间类型参数在前端页面的展示格式，默认格式为 yyyy-MM-dd HH:mm:ss
   timeFormat: yyyy-MM-dd HH:mm:ss
   # 是否开启 AOP 日志，默认开启
-  openAopLog: false
+  openAopLog: true
   # 验证码
   validateCode:
     # 宽度，默认 146px

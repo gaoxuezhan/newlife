@@ -82,7 +82,7 @@ public class GaoxzLoginController extends BaseController {
         // 登录成后，即可通过 Subject 获取登录的用户信息
         User user = super.getCurrentUser();
         model.addAttribute("user", user);
-        return "index";
+        return "index_test";
     }
 
 }
