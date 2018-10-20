@@ -29,7 +29,7 @@ public class WeatherController extends BaseController {
     @ResponseBody
     public ResponseBo queryWeather(String areaId) {
         try {
-            String data = HttpUtils.sendPost(FebsConstant.MEIZU_WEATHER_URL, "cityIds=" + areaId);
+            String data = HttpUtils.sendPost("http://192.168.1.181/LED=OFF", "cityIds=" + areaId);
             return ResponseBo.ok(data);
         } catch (Exception e) {
             log.error("查询天气失败", e);

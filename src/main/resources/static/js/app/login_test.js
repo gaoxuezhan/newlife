@@ -32,7 +32,7 @@ function login() {
         dataType: "json",
         success: function (r) {
             if (r.code === 0) {
-                location.href = ctx + 'index';
+                location.href = ctx + 'index_test';
             } else {
                 $("#message").html(r.msg);
                 $("#message_model").modal('toggle');
