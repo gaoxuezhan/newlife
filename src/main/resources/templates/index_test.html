@@ -1,31 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html xmlns:th="http://www.thymeleaf.org">
 
-<head>
+<html lang="zh-CN">
+  <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="edge" />
-    <title>FEBS权限管理系统</title>
-    <link rel="shortcut icon" type="image/png" th:href="@{/img/favicon.ico}" />
-    <!-- Vendor styles -->
-    <link rel="stylesheet" data-th-href="@{css/material-design-iconic-font/css/material-design-iconic-font.min.css}">
-    <link rel="stylesheet" data-th-href="@{css/jquery.scrollbar/jquery.scrollbar.css}">
-    <!-- App styles -->
-    <link rel="stylesheet" data-th-href="@{css/app.css}">
-    <!-- Bootstrap Table -->
-    <link rel="stylesheet" data-th-href="@{css/bootstrap-table/bootstrap-table.css}">
-    <!-- animate -->
-    <link rel="stylesheet" data-th-href="@{css/animate/animate.min.css}">
-    <!-- multiple-select -->
-    <link rel="stylesheet" data-th-href="@{css/multiple-select/multiple-select.css}">
-    <!-- jsTree -->
-    <link rel="stylesheet" data-th-href="@{css/jsTree/style.min.css}">
-    <!-- treeTable -->
-    <link rel="stylesheet" data-th-href="@{css/jqTreeGrid/jquery.treegrid.css}">
-    <!-- sweetalert2 -->
-    <link rel="stylesheet" data-th-href="@{css/sweetalert2/sweetalert2.css}">
-    <!-- datarangepicker -->
-    <link rel="stylesheet" data-th-href="@{css/daterangepicker/daterangepicker.css}">
+    <title>天空实验室</title>
+    <meta name="description" content="Flat UI Kit Free is a Twitter Bootstrap Framework design and Theme, this responsive framework includes a PSD and HTML version."/>
+
+    <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
 
     <!-- Loading Bootstrap -->
     <link href="flat-ui/dist/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -33,21 +15,256 @@
     <!-- Loading Flat UI -->
     <link href="flat-ui/dist/css/flat-ui.css" rel="stylesheet">
     <link href="flat-ui/docs/assets/css/demo.css" rel="stylesheet">
-</head>
-<body data-ma-theme="green">
-    <div data-th-include="common/common"></div>
-    <main class="main">
-        <div data-th-include="common/header"></div>
-        <div data-th-include="common/aside"></div>
-        <div data-th-include="common/main"></div>
-    </main>
-    <div data-th-include="system/user/updatePassword"></div>
-</body>
-<script data-th-inline="javascript">
-	var ctx = [[@{/}]];
-	var userName = [[${user.username}]];
-	var theme = [[${user.theme}]];
-	var avatar = ctx + "img/avatar/" + [[${user.avatar}]];
+
+    <link rel="shortcut icon" href="flat-ui/img/favicon.ico">
+
+  </head>
+  <body>
+    <style>
+      body {
+        min-height: 100px;
+        padding-top: 70px;
+      }
+    </style>
+
+    <div class="container">
+
+    <!-- Static navbar -->
+    <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">LunaLab Control Center</span>
+          </button>
+          <a class="navbar-brand" href="#">天空实验室(Skylab)</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">勇气号</a></li>
+            <li><a href="#about">情报中心</a></li>
+            <li><a href="#contact">联络站</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">行动 <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">行动1</a></li>
+                <li><a href="#">行动2</a></li>
+                <li><a href="#">行动3</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">待定链接1</a></li>
+                <li><a href="#">待定链接2</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse &ndash;&gt; -->
+      </div>
+    </div>
+
+
+      <div class="login">
+        <img src="http://192.168.1.66:6600/?action=stream" height="473" width="864">
+      </div>
+    </div>      
+
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-7">
+            <div class="row" style="margin-top: 20px">
+
+              <div class="col-xs-8">
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <button type="button" class="btn btn-info btn-hg" style="font-size: 50px" onclick="goForward()">
+                        <span class="fui-triangle-up"></span>                    
+                      </button>
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <button type="button" class="btn btn-info btn-hg" style="font-size: 50px" onclick="goLeft()">
+                        <span class="fui-triangle-left-large"></span>                                        
+                      </button>
+                    </td>
+                    <td></td>
+                    <td>
+                      <button type="button" class="btn btn-info btn-hg" style="font-size: 50px" onclick="goRight()">
+                        <span class="fui-triangle-right-large"></span>                                        
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <button type="button" class="btn btn-info btn-hg" style="font-size: 50px" onclick="goBack()">
+                        <span class="fui-triangle-down"></span>                                        
+                      </button>
+                    </td>
+                    <td></td>
+                  </tr>                            
+                </table>
+              </div>
+              <div class="col-xs-4" style="margin-top: 38px;">
+                <!--上-->
+                <!--<div id="vertical-slider" style="height: 200px;margin-top: 10px"></div>-->
+                <!--下-->
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <button type="button" class="btn btn-warning btn-hg" style="font-size: 50px" onclick="headup()">
+                        <span class="fui-triangle-up"></span>
+                      </button>
+                    </td>
+                    <td></td>
+                  </tr>
+
+                  <tr style=" height: 110px; ">
+                    <td></td>
+                    <td>
+                      <button type="button" class="btn btn-warning btn-hg" style="font-size: 50px" onclick="headdown()">
+                        <span class="fui-triangle-down"></span>
+                      </button>
+                    </td>
+                    <td></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div> <!-- /col-xs-7 -->
+
+          <div class="col-xs-5">
+            <div class="footer-banner">
+              <h3 class="footer-title">勇气号(Spirit, MER-A)</h3>
+              <ul>
+                <li>请使用蓝色按钮控制</li>
+                <li>勇气号的前进后退与转弯</li>
+                <li></li>
+                <li>请使用橘色按钮控制</li>
+                <li>勇气号仰视或俯视角度</li>
+                <li></li>
+                <li>您也可以使用键盘</li>
+                <li>上下左右和数字键1,2</li>
+              </ul>
+              Go to: <a href="http://www.gaoxz.com" target="_blank">www.gaoxz.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="flat-ui/dist/js/vendor/jquery.min.js"></script>
+    <script src="flat-ui/dist/js/vendor/video.js"></script>
+    <script src="flat-ui/dist/js/flat-ui.min.js"></script>
+    <script src="flat-ui/docs/assets/js/application.js"></script>
+
+    <script>
+	$(document).keydown(function(event){
+	  //alert(event.keyCode); 
+	  //判断当event.keyCode 为37时（即左方面键），执行函数to_left();
+	  //判断当event.keyCode 为39时（即右方面键），执行函数to_right();
+	  if(event.keyCode == 37){
+         console.log('left');
+         goLeft();
+	  　 stopDefault(event);
+	  }else if (event.keyCode == 38){ 
+	     console.log('up');
+	     goForward();
+	  　 stopDefault(event);
+	  }else if (event.keyCode == 39){ 
+	     console.log('right');
+	     goRight();
+	  　 stopDefault(event);
+	  }else if (event.keyCode == 40 ){ 
+	     console.log('down');
+	     goBack();
+	  　 stopDefault(event);
+	  }else if (event.keyCode == 49 ){ 
+	     console.log('headup');
+	     headup();
+	  　 stopDefault(event);
+	  }else if (event.keyCode == 50 ){ 
+	     console.log('headdown');
+	     headdown();
+	  　 stopDefault(event);
+	  }
+	});
+	$(document).keyup(function(event){
+	  //判断当event.keyCode 为37时（即左方面键），执行函数to_left();
+	  //判断当event.keyCode 为39时（即右方面键），执行函数to_right();
+	  if(event.keyCode == 37){
+             console.log('left keyup');
+	  　 stopDefault(event);
+	  }else if (event.keyCode == 38){ 
+	     console.log('up keyup');
+	  　 stopDefault(event);
+	  }else if (event.keyCode == 39){ 
+	     console.log('right keyup');
+	  　 stopDefault(event);
+	  }else if (event.keyCode == 40){ 
+	     console.log('down keyup');
+	  　 stopDefault(event);
+	  }else if (event.keyCode == 49 ){ 
+	     console.log('headup keyup');
+	  　 stopDefault(event);
+	  }else if (event.keyCode == 50 ){ 
+	     console.log('headdown keydown');
+	  　 stopDefault(event);
+	  } 
+	});
+
+	function stopDefault(e)  
+	{  
+	    if (e&&e.preventDefault)  
+	    {  
+		e.preventDefault();  
+	    }  
+	    else  
+	    {  
+		window.event.returnValue = false;  
+	    }  
+	}  
+
+	function goForward()
+	{  
+		$.get("lunar/forward",function(data,status){
+			console.log("Data: " + data + "\nStatus: " + status);
+		}); 
+	}
+    function goBack()
+    {
+        $.get("lunar/back",function(data,status){
+            console.log("Data: " + data + "\nStatus: " + status);
+        });
+    }
+    function goLeft()
+    {
+        $.get("lunar/left",function(data,status){
+            console.log("Data: " + data + "\nStatus: " + status);
+        });
+    }
+    function goRight()
+    {
+        $.get("lunar/right",function(data,status){
+            console.log("Data: " + data + "\nStatus: " + status);
+        });
+    }
+    function headup()
+    {
+        $.get("lunar/headup",function(data,status){
+            console.log("Data: " + data + "\nStatus: " + status);
+        });
+    }
+    function headdown()
+    {
+        $.get("lunar/headdown",function(data,status){
+            console.log("Data: " + data + "\nStatus: " + status);
+        });
+    }
+
 </script>
-<script data-th-src="@{js/app/index_test.js}"></script>
+  </body>
 </html>
