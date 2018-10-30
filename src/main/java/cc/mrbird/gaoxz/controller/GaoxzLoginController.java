@@ -1,4 +1,4 @@
-package cc.mrbird.system.controller;
+package cc.mrbird.gaoxz.controller;
 
 import cc.mrbird.common.annotation.Log;
 import cc.mrbird.common.config.FebsProperties;

@@ -41,3 +41,11 @@ function login() {
         }
     });
 }
+document.onkeyup = function (e) {
+    if (window.event)
+        e = window.event;
+    var code = e.charCode || e.keyCode;
+    if (code === 13) {
+        login();
+    }
+};

@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 80
   tomcat:
     uri-encoding: utf-8
 spring:
@@ -61,6 +61,14 @@ spring:
       filter:
         stat:
           log-slow-sql: true
+  # gaoxz:mongodb
+  data:
+    mongodb:
+      host: 192.168.1.99
+      port: 27017
+      username: tianxun
+      password: gaoxz
+      database: tianxun
 
   redis:
     # Redis数据库索引（默认为0）
