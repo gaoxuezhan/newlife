@@ -239,111 +239,185 @@
 <script data-th-src="@{js/app/login_test.js?v=2}"></script>
 
 <script type="text/javascript">
-    // var data1 =  $.parseJSON(data); //此处代码很关键，后台返回的JSON字符串数据ECharts是无法直接解析的，必须
-    //解析一下，使他变成JSON对象（JS对象），ECharts才能操作该数据。
-    $('#table_id_example').dataTable( {
-        "processing": true,
-        "paging":   false,
-        "ordering": true,
-        "info":     false,
-        "filter":     false,
+    function drawTable() {
+        // var data1 =  $.parseJSON(data); //此处代码很关键，后台返回的JSON字符串数据ECharts是无法直接解析的，必须
+        //解析一下，使他变成JSON对象（JS对象），ECharts才能操作该数据。
+        $('#table_id_example').dataTable({
+            "processing": true,
+            "paging": false,
+            "ordering": true,
+            "info": false,
+            "filter": false,
 //        "data": data,
-        columns: [
-            { data: null },
-            { data: 'code' },
-            { data: 'targetDate' },
-            { data: 'departureTime' },
-            { data: 'arriveTime' },
-            { data: 'timeCost' },
-            { data: 'departureAirport' },
-            { data: 'arriveAirport' },
-            { data: 'price' },
-            { data: 'updateTime' }
-        ],
-        "columnDefs" : [ {
-            "targets" : 0,//操作按钮目标列
-            "data" : null,
-            "render" : function(data, type,row) {
-                var code = '"' + row.code + '"';
-                var targetDate = '"' + row.targetDate + '"';
-                var html =  "<a href='javascript:void(0);' onclick='test("+ code + "," + targetDate + ")' class='down btn btn-default btn-xs'><i class='fa fa-arrow-down'></i>历史曲线</a>"
-                return html;
-            }
-        } ],
-        language:{
-            "sProcessing":   "<img src='img/ajax-loader2.gif'>",
-            "sLengthMenu":   "显示 _MENU_ 项结果",
-            "sZeroRecords":  "没有匹配结果",
-            "sInfo":         "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-            "sInfoEmpty":    "显示第 0 至 0 项结果，共 0 项",
-            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-            "sInfoPostFix":  "",
-            "sSearch":       "搜索:",
-            "sUrl":          "",
-            "sEmptyTable":     "表中数据为空",
-            "sLoadingRecords": "                  ", //载入中
-            "sInfoThousands":  ",",
-            "oPaginate": {
-                "sFirst":    "首页",
-                "sPrevious": "上页",
-                "sNext":     "下页",
-                "sLast":     "末页"
+            columns: [
+                {data: null},
+                {data: 'code'},
+                {data: 'targetDate'},
+                {data: 'departureTime'},
+                {data: 'arriveTime'},
+                {data: 'timeCost'},
+                {data: 'departureAirport'},
+                {data: 'arriveAirport'},
+                {data: 'price'},
+                {data: 'updateTime'}
+            ],
+            "columnDefs": [{
+                "targets": 0,//操作按钮目标列
+                "data": null,
+                "render": function (data, type, row) {
+                    var code = '"' + row.code + '"';
+                    var targetDate = '"' + row.targetDate + '"';
+                    var html = "<a href='javascript:void(0);' onclick='openModel(" + code + "," + targetDate + ")' class='down btn btn-default btn-xs'><i class='fa fa-arrow-down'></i>历史曲线</a>"
+                    return html;
+                }
+            }],
+            language: {
+                "sProcessing": "<img src='img/ajax-loader2.gif'>",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "                  ", //载入中
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
             },
-            "oAria": {
-                "sSortAscending":  ": 以升序排列此列",
-                "sSortDescending": ": 以降序排列此列"
-            }
-        },
-        "createdRow": function ( row, data, index ) {
-            //价格
-            $('td', row).eq(8).css('font-weight',"bold").css("color","red");
+            "createdRow": function (row, data, index) {
+                //价格
+                $('td', row).eq(8).css('font-weight', "bold").css("color", "red");
 
-            var col;
-            var temp;
-            //出发机场
-            col = 6;
-            temp =  $('td', row).eq(col).html();
-            temp = temp.replace('国际','');
-            temp = temp.replace('机场','');
-            $('td', row).eq(col).html(temp);
-            //到达机场
-            col = 7;
-            temp =  $('td', row).eq(col).html();
-            temp = temp.replace('国际','');
-            temp = temp.replace('机场','');
-            $('td', row).eq(col).html(temp);
-        },
-        "ajax" : {
-            url : "/findAll",
-            type : "GET",
-            dataType : "JSON",
-            data: {},
-            dataSrc:function(responseJson){
-                //这里result和上面jquery的ajax的代码类似，也是可以得到data.json的数据，但是这样的格式，Datatables不能直接使用，这时候需要在这里处理一下
-                //直接返回Datatables需要的那部分数据即可，看到这里，大家或许又懂了些什么看到了他的强大和灵活
-                console.log(responseJson);
-                console.log(typeof(responseJson));
-                return responseJson.result;
+                var col;
+                var temp;
+                //出发机场
+                col = 6;
+                temp = $('td', row).eq(col).html();
+                temp = temp.replace('国际', '');
+                temp = temp.replace('机场', '');
+                $('td', row).eq(col).html(temp);
+                //到达机场
+                col = 7;
+                temp = $('td', row).eq(col).html();
+                temp = temp.replace('国际', '');
+                temp = temp.replace('机场', '');
+                $('td', row).eq(col).html(temp);
             },
-            error : function(errorMsg) {
-                //请求失败时执行该函数
-                console.log('服务器开了点小差，请稍后刷新页面!', {icon: 0});
+            "ajax": {
+                url: "/findAll",
+                type: "GET",
+                dataType: "JSON",
+                data: {},
+                dataSrc: function (responseJson) {
+                    //这里result和上面jquery的ajax的代码类似，也是可以得到data.json的数据，但是这样的格式，Datatables不能直接使用，这时候需要在这里处理一下
+                    //直接返回Datatables需要的那部分数据即可，看到这里，大家或许又懂了些什么看到了他的强大和灵活
+                    console.log(responseJson);
+                    console.log(typeof(responseJson));
+                    return responseJson.result;
+                },
+                error: function (errorMsg) {
+                    //请求失败时执行该函数
+                    console.log('服务器开了点小差，请稍后刷新页面!', {icon: 0});
+                }
             }
-        }
 
-    });
+        });
+    };
 
-    function test(code, targetDate) {
+    function openModel(code, targetDate) {
         drawChart(targetDate,code);
         $("#message").html(code + "_" + targetDate);
         $("#message_model").modal('toggle');
     };
 
     $("#search").click(function(event) {
-        alert($("#targetDate").val());
+        drawTable();
     });
 </script>
 
+
+<script type="text/javascript">
+    function makeup(targetDate, code){
+        /**  -------------首页地图初始化 start----- */
+        $.ajax({
+            url : "/findConditions",
+            type : "POST",
+            dataType : "JSON",
+            data: {
+            },
+            success : function(makeupData) {//这里得到后台Java响应的json数据,即resultJsonMapData
+                console.log(makeupData);
+                console.log(typeof(makeupData));
+
+                $("#targetDate").find("option[text='1']").attr("selected",true);
+
+                $("#targetDate").empty();
+                $("#code").empty();
+                $("#dep").empty();
+                $("#arr").empty();
+
+                $("#targetDate").val("").select2();
+                $("#code").val("").select2();
+                $("#dep").val("").select2();
+                $("#arr").val("").select2();
+
+                for(var i in makeupData.targetDates){
+                    $("#targetDate").append("<option value='" + makeupData.targetDates[i] + "'>" + makeupData.targetDates[i] + "</option>");
+                };
+
+                for(var i in makeupData.codes){
+                    $("#code").append("<option value='" + makeupData.codes[i] + "'>" + makeupData.codes[i] + "</option>");
+                };
+
+                for(var i in makeupData.departureCities){
+                    $("#dep").append("<option value='" + makeupData.departureCities[i] + "'>" + makeupData.departureCities[i] + "</option>");
+                };
+
+                for(var i in makeupData.arriveCities){
+                    $("#arr").append("<option value='" + makeupData.arriveCities[i] + "'>" + makeupData.arriveCities[i] + "</option>");
+                };
+
+
+                var b=$("#targetDate option:first").text();
+                $("#targetDate").val(b).select2();
+
+                var b=$("#code option:first").text();
+                $("#code").val(b).select2();
+
+                var b=$("#dep option:first").text();
+                $("#dep").val(b).select2();
+
+                var b=$("#arr option:first").text();
+                $("#arr").val(b).select2();
+
+
+                // $("#code").empty();
+                // $("#dep").empty();
+                // $("#arr").empty();
+
+            },
+            error : function(errorMsg) {
+                //请求失败时执行该函数
+                console.log('服务器开了点小差，请稍后刷新页面!', {icon: 0});
+                myChart.hideLoading();
+            }
+        });
+
+        /**  -------------首页地图初始化 end ----- */
+
+    };
+</script>
 
 <script type="text/javascript">
     function drawChart(targetDate, code){
@@ -421,7 +495,9 @@
     };
 </script>
 
-
+<script type="text/javascript">
+    makeup("", "");
+</script>
 
 </body>
 </html>

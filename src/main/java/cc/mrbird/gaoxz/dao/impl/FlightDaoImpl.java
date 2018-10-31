@@ -135,7 +135,7 @@ public class FlightDaoImpl implements FlightDao {
         }
 
         if(StringUtils.isEmpty(code) == false){
-            criteria.and("code").is(code);
+            criteria.and("code").in(code.split(","));
 //            query.addCriteria(Criteria.where("code").is(code));
         }
 

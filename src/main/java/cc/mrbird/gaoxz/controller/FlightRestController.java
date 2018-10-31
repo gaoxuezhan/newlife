@@ -25,9 +25,6 @@ public class FlightRestController {
 	@RequestMapping("/history")
 	public Map welcome(@RequestParam String targetDate, @RequestParam String code) {
 
-//		String code = model.get("code").toString();
-//		String targetDate = model.get("targetDate").toString();
-
 		System.out.println(code);
 		System.out.println(targetDate);
 
@@ -73,20 +70,30 @@ public class FlightRestController {
 		return resultMap;
 	}
 
-	@RequestMapping("/findAll2")
-	public List findAll2(Map<String, Object> model) {
-		List result = flightDao.getTheNewestData("2018-12-29","", "", "ZH9112");
-
-		return result;
-	}
 
 	@RequestMapping("/findAll")
 	public Map findAll(Map<String, Object> model) {
-		List result = flightDao.getTheNewestData("2018-11-13","", "", "");
+		List result = flightDao.getTheNewestData("2018-11-13","", "", "CZ3172,CA1383");
 
 		Map<String, List> resultMap = new HashMap<String,List>();
 
 		resultMap.put("result", result);
+		return resultMap;
+	}
+
+	@RequestMapping("/findConditions")
+	public Map findConditions(Map<String, Object> model) {
+		List targetDates = flightDao.getTargetDates_distinct("", "", "", "");
+		List departureCities = flightDao.getDepartureCity_distinct("", "", "", "");
+		List arriveCities = flightDao.getArriveCity_distinct("", "", "", "");
+		List codes = flightDao.getCode_distinct("", "", "", "");
+
+		Map<String, List> resultMap = new HashMap<String,List>();
+		resultMap.put("targetDates",targetDates );
+		resultMap.put("departureCities",departureCities );
+		resultMap.put("arriveCities",arriveCities );
+		resultMap.put("codes",codes );
+
 		return resultMap;
 	}
 
