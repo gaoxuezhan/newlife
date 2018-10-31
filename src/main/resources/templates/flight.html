@@ -130,6 +130,7 @@
 <table id="table_id_example" class="compact hover cell-border">
     <thead>
         <tr>
+            <th>操作</th>
             <th>航班号</th>
             <th>日期</th>
             <th>出发时间</th>
@@ -138,6 +139,7 @@
             <th>出发机场</th>
             <th>到达机场</th>
             <th>价格</th>
+            <th>采集日时</th>
         </tr>
     </thead>
     <tbody>
@@ -214,62 +216,201 @@
     var ctx = [[@{/}]];
 </script>
 <script data-th-src="@{js/app/login_test.js?v=2}"></script>
-<script type="text/javascript">
-    <!--第三步初始化Datatables-->
-//    $(document).ready( function () {
-//        $('#table_id_example').dataTable( {
-//            "paging":   false,
-//            "ordering": false,
-//            "info":     false,
-//            "filter":     false,
-//            "ajax": '/flight'
-//        } );
-//    } );
-</script>
+
+<!--<script type="text/javascript">-->
+    <!--$(document).ready(function(){-->
+        <!--/**  -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;flight data start-&#45;&#45;&#45;&#45; */-->
+        <!--$.ajax({-->
+            <!--url : "/findAll",-->
+            <!--type : "GET",-->
+            <!--dataType : "JSON",-->
+            <!--data: {},-->
+            <!--success : function(data) {//这里得到后台Java响应的json数据,即resultJsonMapData-->
+                <!--console.log(data);-->
+                <!--console.log(typeof(data));-->
+
+                <!--// var data1 =  $.parseJSON(data); //此处代码很关键，后台返回的JSON字符串数据ECharts是无法直接解析的，必须-->
+                <!--//解析一下，使他变成JSON对象（JS对象），ECharts才能操作该数据。-->
+                <!--$('#table_id_example').dataTable( {-->
+                    <!--"processing": true,-->
+                    <!--"paging":   false,-->
+                    <!--"ordering": true,-->
+                    <!--"info":     false,-->
+                    <!--"filter":     false,-->
+                    <!--"data": data,-->
+                    <!--columns: [-->
+                        <!--{ data: null },-->
+                        <!--{ data: 'code' },-->
+                        <!--{ data: 'targetDate' },-->
+                        <!--{ data: 'departureTime' },-->
+                        <!--{ data: 'arriveTime' },-->
+                        <!--{ data: 'timeCost' },-->
+                        <!--{ data: 'departureAirport' },-->
+                        <!--{ data: 'arriveAirport' },-->
+                        <!--{ data: 'price' },-->
+                        <!--{ data: 'updateTime' }-->
+                    <!--],-->
+                    <!--"columnDefs" : [ {-->
+                        <!--"targets" : 0,//操作按钮目标列-->
+                        <!--"data" : null,-->
+                        <!--"render" : function(data, type,row) {-->
+                            <!--var code = '"' + row.code + '"';-->
+                            <!--var html =  "<a href='javascript:void(0);' onclick='deleteThisRowPapser("+ code + ")' class='down btn btn-default btn-xs'><i class='fa fa-arrow-down'></i>" + String(code) + "</a>"-->
+                            <!--return html;-->
+                        <!--}-->
+                    <!--} ],-->
+                    <!--language:{-->
+                        <!--"sProcessing":   "处理中...",-->
+                        <!--"sLengthMenu":   "显示 _MENU_ 项结果",-->
+                        <!--"sZeroRecords":  "没有匹配结果",-->
+                        <!--"sInfo":         "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",-->
+                        <!--"sInfoEmpty":    "显示第 0 至 0 项结果，共 0 项",-->
+                        <!--"sInfoFiltered": "(由 _MAX_ 项结果过滤)",-->
+                        <!--"sInfoPostFix":  "",-->
+                        <!--"sSearch":       "搜索:",-->
+                        <!--"sUrl":          "",-->
+                        <!--"sEmptyTable":     "表中数据为空",-->
+                        <!--"sLoadingRecords": "载入中...",-->
+                        <!--"sInfoThousands":  ",",-->
+                        <!--"oPaginate": {-->
+                            <!--"sFirst":    "首页",-->
+                            <!--"sPrevious": "上页",-->
+                            <!--"sNext":     "下页",-->
+                            <!--"sLast":     "末页"-->
+                        <!--},-->
+                        <!--"oAria": {-->
+                            <!--"sSortAscending":  ": 以升序排列此列",-->
+                            <!--"sSortDescending": ": 以降序排列此列"-->
+                        <!--}-->
+                    <!--},-->
+                    <!--"createdRow": function ( row, data, index ) {-->
+                        <!--//价格-->
+                        <!--$('td', row).eq(8).css('font-weight',"bold").css("color","red");-->
+
+                        <!--var col;-->
+                        <!--var temp;-->
+                        <!--//出发机场-->
+                        <!--col = 6;-->
+                        <!--temp =  $('td', row).eq(col).html();-->
+                        <!--temp = temp.replace('国际','');-->
+                        <!--temp = temp.replace('机场','');-->
+                        <!--$('td', row).eq(col).html(temp);-->
+                        <!--//到达机场-->
+                        <!--col = 7;-->
+                        <!--temp =  $('td', row).eq(col).html();-->
+                        <!--temp = temp.replace('国际','');-->
+                        <!--temp = temp.replace('机场','');-->
+                        <!--$('td', row).eq(col).html(temp);-->
+                    <!--}-->
+                <!--});-->
+            <!--},-->
+            <!--error : function(errorMsg) {-->
+                <!--//请求失败时执行该函数-->
+                <!--console.log('服务器开了点小差，请稍后刷新页面!', {icon: 0});-->
+            <!--}-->
+        <!--});-->
+
+        <!--/**  -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;首页地图初始化 end -&#45;&#45;&#45;&#45; */-->
+
+    <!--});-->
+<!--</script>-->
 
 <script type="text/javascript">
-    $(document).ready(function(){
-        /**  -------------首页地图初始化 start----- */
-        $.ajax({
+    // var data1 =  $.parseJSON(data); //此处代码很关键，后台返回的JSON字符串数据ECharts是无法直接解析的，必须
+    //解析一下，使他变成JSON对象（JS对象），ECharts才能操作该数据。
+    $('#table_id_example').dataTable( {
+        "processing": true,
+        "paging":   false,
+        "ordering": true,
+        "info":     false,
+        "filter":     false,
+//        "data": data,
+        columns: [
+            { data: null },
+            { data: 'code' },
+            { data: 'targetDate' },
+            { data: 'departureTime' },
+            { data: 'arriveTime' },
+            { data: 'timeCost' },
+            { data: 'departureAirport' },
+            { data: 'arriveAirport' },
+            { data: 'price' },
+            { data: 'updateTime' }
+        ],
+        "columnDefs" : [ {
+            "targets" : 0,//操作按钮目标列
+            "data" : null,
+            "render" : function(data, type,row) {
+                var code = '"' + row.code + '"';
+                var html =  "<a href='javascript:void(0);' onclick='deleteThisRowPapser("+ code + ")' class='down btn btn-default btn-xs'><i class='fa fa-arrow-down'></i>" + String(code) + "</a>"
+                return html;
+            }
+        } ],
+        language:{
+            "sProcessing":   "<img src='img/ajax-loader2.gif'>",
+            "sLengthMenu":   "显示 _MENU_ 项结果",
+            "sZeroRecords":  "没有匹配结果",
+            "sInfo":         "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+            "sInfoEmpty":    "显示第 0 至 0 项结果，共 0 项",
+            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+            "sInfoPostFix":  "",
+            "sSearch":       "搜索:",
+            "sUrl":          "",
+            "sEmptyTable":     "表中数据为空",
+            "sLoadingRecords": "                  ", //载入中
+            "sInfoThousands":  ",",
+            "oPaginate": {
+                "sFirst":    "首页",
+                "sPrevious": "上页",
+                "sNext":     "下页",
+                "sLast":     "末页"
+            },
+            "oAria": {
+                "sSortAscending":  ": 以升序排列此列",
+                "sSortDescending": ": 以降序排列此列"
+            }
+        },
+        "createdRow": function ( row, data, index ) {
+            //价格
+            $('td', row).eq(8).css('font-weight',"bold").css("color","red");
+
+            var col;
+            var temp;
+            //出发机场
+            col = 6;
+            temp =  $('td', row).eq(col).html();
+            temp = temp.replace('国际','');
+            temp = temp.replace('机场','');
+            $('td', row).eq(col).html(temp);
+            //到达机场
+            col = 7;
+            temp =  $('td', row).eq(col).html();
+            temp = temp.replace('国际','');
+            temp = temp.replace('机场','');
+            $('td', row).eq(col).html(temp);
+        },
+        "ajax" : {
             url : "/findAll",
             type : "GET",
             dataType : "JSON",
             data: {},
-            success : function(data) {//这里得到后台Java响应的json数据,即resultJsonMapData
-                console.log(data);
-                console.log(typeof(data));
-
-                // var data1 =  $.parseJSON(data); //此处代码很关键，后台返回的JSON字符串数据ECharts是无法直接解析的，必须
-                //解析一下，使他变成JSON对象（JS对象），ECharts才能操作该数据。
-                $('#table_id_example').dataTable( {
-                    "paging":   false,
-                    "ordering": true,
-                    "info":     false,
-                    "filter":     false,
-                    "data": data,
-                    columns: [
-                        { data: 'code' },
-                        { data: 'targetDate' },
-                        { data: 'departureTime' },
-                        { data: 'arriveTime' },
-                        { data: 'timeCost' },
-                        { data: 'departureAirport' },
-                        { data: 'arriveAirport' },
-                        { data: 'price' }
-                    ]
-                } );
-
+            dataSrc:function(responseJson){
+                //这里result和上面jquery的ajax的代码类似，也是可以得到data.json的数据，但是这样的格式，Datatables不能直接使用，这时候需要在这里处理一下
+                //直接返回Datatables需要的那部分数据即可，看到这里，大家或许又懂了些什么看到了他的强大和灵活
+                console.log(responseJson);
+                console.log(typeof(responseJson));
+                return responseJson.result;
             },
             error : function(errorMsg) {
                 //请求失败时执行该函数
                 console.log('服务器开了点小差，请稍后刷新页面!', {icon: 0});
             }
-        });
-
-        /**  -------------首页地图初始化 end ----- */
+        }
 
     });
 </script>
+
+
 
 </body>
 </html>

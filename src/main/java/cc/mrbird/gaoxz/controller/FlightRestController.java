@@ -47,11 +47,21 @@ public class FlightRestController {
 		return result;
 	}
 
-	@RequestMapping("/findAll")
-	public List findAll(Map<String, Object> model) {
-		List result = flightDao.getTheNewestData("2018-12-29","", "", "");
+	@RequestMapping("/findAll2")
+	public List findAll2(Map<String, Object> model) {
+		List result = flightDao.getTheNewestData("2018-12-29","", "", "ZH9112");
 
 		return result;
+	}
+
+	@RequestMapping("/findAll")
+	public Map findAll(Map<String, Object> model) {
+		List result = flightDao.getTheNewestData("2018-11-13","", "", "ZH9112");
+
+		Map<String, List> resultMap = new HashMap<String,List>();
+
+		resultMap.put("result", result);
+		return resultMap;
 	}
 
 }
