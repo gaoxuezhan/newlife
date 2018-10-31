@@ -22,7 +22,7 @@ public class FlightRestController {
 	@RequestMapping("/history")
 	public List welcome(Map<String, Object> model) {
 
-		FlightEx flights= flightDao.getTheHistoryDataOfTheFlightInTargetDate("2018-12-29", "MU5391");
+		FlightEx flights= flightDao.getTheHistoryDataOfTheFlightInTargetDate("2018-11-13", "ZH9114");
 
 		List<String> keyList = new ArrayList<String>();
 		keyList.addAll(flights.getDetail().keySet());

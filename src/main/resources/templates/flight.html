@@ -130,18 +130,21 @@
 <table id="table_id_example" class="compact hover cell-border">
     <thead>
         <tr>
-            <th>Column 1</th>
-            <th>Column 2</th>
+            <th>航班号</th>
+            <th>日期</th>
+            <th>出发时间</th>
+            <th>到达时间</th>
+            <th>飞行时间</th>
+            <th>出发机场</th>
+            <th>到达机场</th>
+            <th>价格</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>Row 1 Data 1</td>
             <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 2 Data 1</td>
-            <td>Row 2 Data 2</td>
+            <td>Row 1 Data 2</td>
         </tr>
     </tbody>
 </table>
@@ -246,6 +249,12 @@
                     "data": data,
                     columns: [
                         { data: 'code' },
+                        { data: 'targetDate' },
+                        { data: 'departureTime' },
+                        { data: 'arriveTime' },
+                        { data: 'timeCost' },
+                        { data: 'departureAirport' },
+                        { data: 'arriveAirport' },
                         { data: 'price' }
                     ]
                 } );
