@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class FlightRestController {
@@ -25,8 +22,8 @@ public class FlightRestController {
 	@RequestMapping("/history")
 	public Map welcome(@RequestParam String targetDate, @RequestParam String code) {
 
-		System.out.println(code);
-		System.out.println(targetDate);
+//		System.out.println(code);
+//		System.out.println(targetDate);
 
 		Integer yMin = 10000;
 		Integer yMax = 0;
@@ -72,8 +69,27 @@ public class FlightRestController {
 
 
 	@RequestMapping("/findAll")
-	public Map findAll(Map<String, Object> model) {
-		List result = flightDao.getTheNewestData("2018-11-13","", "", "CZ3172,CA1383");
+	public Map findAll(@RequestParam String targetDate, @RequestParam String code, @RequestParam String departureCity, @RequestParam String arriveCity) {
+
+	    System.out.println(targetDate);
+        System.out.println(code);
+        System.out.println(departureCity);
+        System.out.println(arriveCity);
+
+        targetDate = targetDate.replace("\"", "");
+        targetDate = targetDate.replace("[", "");
+        targetDate = targetDate.replace("]", "");
+        targetDate = targetDate.replace("null", "");
+
+        code = code.replace("\"", "");
+        code = code.replace("[", "");
+        code = code.replace("]", "");
+        code = code.replace("null", "");
+
+        departureCity = departureCity.replace("null", "");
+        arriveCity = arriveCity.replace("null", "");
+
+		List result = flightDao.getTheNewestData(targetDate,departureCity, arriveCity, code);
 
 		Map<String, List> resultMap = new HashMap<String,List>();
 
@@ -88,7 +104,32 @@ public class FlightRestController {
 		List arriveCities = flightDao.getArriveCity_distinct("", "", "", "");
 		List codes = flightDao.getCode_distinct("", "", "", "");
 
-		Map<String, List> resultMap = new HashMap<String,List>();
+        Collections.sort(targetDates,new Comparator<String>(){
+            public int compare(String arg0, String arg1) {
+                return arg0.compareTo(arg1);
+            }
+        });
+
+        Collections.sort(codes,new Comparator<String>(){
+            public int compare(String arg0, String arg1) {
+                return arg0.compareTo(arg1);
+            }
+        });
+
+        Collections.sort(departureCities,new Comparator<String>(){
+            public int compare(String arg0, String arg1) {
+                return arg0.compareTo(arg1);
+            }
+        });
+
+        Collections.sort(arriveCities,new Comparator<String>(){
+            public int compare(String arg0, String arg1) {
+                return arg0.compareTo(arg1);
+            }
+        });
+
+
+        Map<String, List> resultMap = new HashMap<String,List>();
 		resultMap.put("targetDates",targetDates );
 		resultMap.put("departureCities",departureCities );
 		resultMap.put("arriveCities",arriveCities );

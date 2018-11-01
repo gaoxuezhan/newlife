@@ -40,8 +40,8 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">勇气号</a></li>
-            <li><a href="#about">情报中心</a></li>
+            <li class="active"><a href="#" id = "sprite">勇气号</a></li>
+            <li><a href="#about" id = "information">情报中心</a></li>
             <li><a href="#contact">联络站</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">行动 <b class="caret"></b></a>
@@ -264,7 +264,15 @@
             console.log("Data: " + data + "\nStatus: " + status);
         });
     }
+</script>
+<script>
+    $("#information").click(function(event) {
+        self.location="flight";
+    });
 
+    $("#sprite").click(function(event) {
+        self.location="index_test";
+    });
 </script>
   </body>
 </html>

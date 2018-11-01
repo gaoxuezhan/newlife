@@ -55,8 +55,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">勇气号</a></li>
-                    <li class="active"><a href="#about">情报中心</a></li>
+                    <li><a href="#" id="sprite">勇气号</a></li>
+                    <li class="active" id="information"><a href="#about">情报中心</a></li>
                     <li><a href="#contact">联络站</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">行动 <b class="caret"></b></a>
@@ -235,6 +235,7 @@
 
 <script th:inline="javascript">
     var ctx = [[@{/}]];
+    var searchTable;
 </script>
 <script data-th-src="@{js/app/login_test.js?v=2}"></script>
 
@@ -242,7 +243,18 @@
     function drawTable() {
         // var data1 =  $.parseJSON(data); //此处代码很关键，后台返回的JSON字符串数据ECharts是无法直接解析的，必须
         //解析一下，使他变成JSON对象（JS对象），ECharts才能操作该数据。
-        $('#table_id_example').dataTable({
+        var code = JSON.stringify($("#code").val());
+        var targetDate = JSON.stringify($("#targetDate").val());
+        var departureCity = $("#dep").val();
+        var arriveCity = $("#arr").val();
+
+        console.log(code);
+        console.log(typeof(code));
+        console.log(targetDate);
+        console.log(departureCity);
+        console.log(arriveCity);
+
+        searchTable = $('#table_id_example').DataTable({
             "processing": true,
             "paging": false,
             "ordering": true,
@@ -316,9 +328,14 @@
             },
             "ajax": {
                 url: "/findAll",
-                type: "GET",
+                type: "POST",
                 dataType: "JSON",
-                data: {},
+                data: {
+                    "code": code,
+                    "targetDate": targetDate,
+                    "departureCity": departureCity,
+                    "arriveCity": "不检索"
+                },
                 dataSrc: function (responseJson) {
                     //这里result和上面jquery的ajax的代码类似，也是可以得到data.json的数据，但是这样的格式，Datatables不能直接使用，这时候需要在这里处理一下
                     //直接返回Datatables需要的那部分数据即可，看到这里，大家或许又懂了些什么看到了他的强大和灵活
@@ -334,7 +351,9 @@
 
         });
     };
+</script>
 
+<script type="text/javascript">
     function openModel(code, targetDate) {
         drawChart(targetDate,code);
         $("#message").html(code + "_" + targetDate);
@@ -342,35 +361,45 @@
     };
 
     $("#search").click(function(event) {
-        drawTable();
-    });
-</script>
+        if(searchTable == undefined){
+            drawTable();
+        }else{
+            var code = JSON.stringify($("#code").val());
+            var targetDate = JSON.stringify($("#targetDate").val());
+            var departureCity = $("#dep").val();
+            var arriveCity = $("#arr").val();
 
+            var param = {
+                "code": code,
+                "targetDate": targetDate,
+                "departureCity": departureCity,
+                "arriveCity": arriveCity
+            };
+            searchTable.settings()[0].ajax.data = param;
+            searchTable.ajax.reload();
+        }
+    });
+
+</script>
 
 <script type="text/javascript">
     function makeup(targetDate, code){
-        /**  -------------首页地图初始化 start----- */
+        /**  -------------检索条件 start----- */
         $.ajax({
             url : "/findConditions",
             type : "POST",
             dataType : "JSON",
-            data: {
+            async : false,
+            data : {
             },
             success : function(makeupData) {//这里得到后台Java响应的json数据,即resultJsonMapData
                 console.log(makeupData);
                 console.log(typeof(makeupData));
 
-                $("#targetDate").find("option[text='1']").attr("selected",true);
-
                 $("#targetDate").empty();
                 $("#code").empty();
                 $("#dep").empty();
                 $("#arr").empty();
-
-                $("#targetDate").val("").select2();
-                $("#code").val("").select2();
-                $("#dep").val("").select2();
-                $("#arr").val("").select2();
 
                 for(var i in makeupData.targetDates){
                     $("#targetDate").append("<option value='" + makeupData.targetDates[i] + "'>" + makeupData.targetDates[i] + "</option>");
@@ -380,31 +409,15 @@
                     $("#code").append("<option value='" + makeupData.codes[i] + "'>" + makeupData.codes[i] + "</option>");
                 };
 
+                $("#dep").append("<option value='null'>　</option>");
                 for(var i in makeupData.departureCities){
                     $("#dep").append("<option value='" + makeupData.departureCities[i] + "'>" + makeupData.departureCities[i] + "</option>");
                 };
 
+                $("#arr").append("<option value='null'>　</option>");
                 for(var i in makeupData.arriveCities){
                     $("#arr").append("<option value='" + makeupData.arriveCities[i] + "'>" + makeupData.arriveCities[i] + "</option>");
                 };
-
-
-                var b=$("#targetDate option:first").text();
-                $("#targetDate").val(b).select2();
-
-                var b=$("#code option:first").text();
-                $("#code").val(b).select2();
-
-                var b=$("#dep option:first").text();
-                $("#dep").val(b).select2();
-
-                var b=$("#arr option:first").text();
-                $("#arr").val(b).select2();
-
-
-                // $("#code").empty();
-                // $("#dep").empty();
-                // $("#arr").empty();
 
             },
             error : function(errorMsg) {
@@ -495,9 +508,41 @@
     };
 </script>
 
+<script type = "text/javascript">
+    $("#information").click(function(event) {
+        self.location="flight";
+    });
+
+    $("#sprite").click(function(event) {
+        self.location="index_test";
+    });
+</script>
+
 <script type="text/javascript">
     makeup("", "");
+
+    $("#targetDate").val("").select2();
+    $("#code").val("").select2();
+    $("#dep").val("").select2();
+    $("#arr").val("").select2();
+
+    drawTable();
+
+//    var b=$("#targetDate option:first").text();
+//    $("#targetDate").val(b).select2();
+//
+//    var b=$("#code option:first").text();
+//    $("#code").val(b).select2();
+//
+//    var b=$("#dep option:first").text();
+//    $("#dep").val(b).select2();
+//
+//    var b=$("#arr option:first").text();
+//    $("#arr").val(b).select2();
+
 </script>
+
+
 
 </body>
 </html>

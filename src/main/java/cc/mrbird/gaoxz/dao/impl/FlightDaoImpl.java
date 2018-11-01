@@ -32,6 +32,9 @@ public class FlightDaoImpl implements FlightDao {
         targetDate = "";
 
         Query query = this.getQuery(targetDate, departureCity, arriveCity, code);
+        Sort.Direction direction=false? Sort.Direction.ASC: Sort.Direction.DESC;
+        query.with(new Sort(direction,whoAmI));
+
         DistinctIterable<String> result = mongoTemplate.getCollection("products").distinct(whoAmI, query.getQueryObject(), String.class);
 
         return result.into(new ArrayList());
@@ -42,6 +45,8 @@ public class FlightDaoImpl implements FlightDao {
         departureCity = "";
 
         Query query = this.getQuery(targetDate, departureCity, arriveCity, code);
+        Sort.Direction direction=false? Sort.Direction.ASC: Sort.Direction.DESC;
+        query.with(new Sort(direction,whoAmI));
         DistinctIterable<String> result = mongoTemplate.getCollection("products").distinct(whoAmI, query.getQueryObject(), String.class);
 
         return result.into(new ArrayList());
@@ -52,6 +57,8 @@ public class FlightDaoImpl implements FlightDao {
         arriveCity = "";
 
         Query query = this.getQuery(targetDate, departureCity, arriveCity, code);
+        Sort.Direction direction=false? Sort.Direction.ASC: Sort.Direction.DESC;
+        query.with(new Sort(direction,whoAmI));
         DistinctIterable<String> result = mongoTemplate.getCollection("products").distinct(whoAmI, query.getQueryObject(), String.class);
 
         return result.into(new ArrayList());
@@ -62,6 +69,8 @@ public class FlightDaoImpl implements FlightDao {
         code = "";
 
         Query query = this.getQuery(targetDate, departureCity, arriveCity, code);
+        Sort.Direction direction=false? Sort.Direction.ASC: Sort.Direction.DESC;
+        query.with(new Sort(direction,whoAmI));
         DistinctIterable<String> result = mongoTemplate.getCollection("products").distinct(whoAmI, query.getQueryObject(), String.class);
 
         return result.into(new ArrayList());
@@ -69,20 +78,22 @@ public class FlightDaoImpl implements FlightDao {
     @Override
     public List getTheNewestData(String targetDate, String departureCity, String arriveCity, String code){
         Query query = this.getQuery(targetDate, departureCity, arriveCity, code);
+        Sort.Direction direction=false? Sort.Direction.ASC: Sort.Direction.DESC;
+        query.with(new Sort(direction,"updateTime"));
+
         List<Flight> flights =  mongoTemplate.find(query, Flight.class, "products");
-//        List<Flight> flights =  mongoTemplate.findAll(Flight.class, "products");
 
         Map<String, Flight> mapNewAll = new HashMap<String, Flight>();
 
         for (Flight flight :
                 flights) {
-            if (mapNewAll.containsKey(flight.getCode())){
-                Flight king = mapNewAll.get(flight.getCode());
+            if (mapNewAll.containsKey(flight.getCode() + flight.getTargetDate())){
+                Flight king = mapNewAll.get(flight.getCode() + flight.getTargetDate());
                 if(king.getUpdateTime().toString().compareTo(flight.getUpdateTime().toString()) < 0){
-                    mapNewAll.put(flight.getCode(),flight);
+                    mapNewAll.put(flight.getCode() + flight.getTargetDate(),flight);
                 }
             }else{
-                mapNewAll.put(flight.getCode(),flight);
+                mapNewAll.put(flight.getCode() + flight.getTargetDate(),flight);
             }
 
         }
@@ -120,7 +131,7 @@ public class FlightDaoImpl implements FlightDao {
         Query query = new Query();
 
         if(StringUtils.isEmpty(targetDate) == false){
-            criteria.and("targetDate").is(targetDate);
+            criteria.and("targetDate").in(targetDate.split(","));
 //            query.addCriteria(Criteria.where("targetDate").is(targetDate));
         }
 
@@ -139,6 +150,7 @@ public class FlightDaoImpl implements FlightDao {
 //            query.addCriteria(Criteria.where("code").is(code));
         }
 
+        criteria.and("updateTime").gt("2018-10-30 00:00:00"); //filter some test data
         return query.addCriteria(criteria);
 
     }
