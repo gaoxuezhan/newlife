@@ -124,7 +124,8 @@
                         <option value="4">Logout</option>
                     </select>
                 </div>
-                <div class="col-xs-4">
+
+                <div class="col-xs-6" style="margin-left:-60px">
                     目的城市：
                     <select class="form-control select select-default mbl" data-toggle="select" id = "arr">
                         <option value="0">My Profile</option>
@@ -133,7 +134,13 @@
                         <option value="3">My Settings</option>
                         <option value="4">Logout</option>
                     </select>
+                    <a href="#fakelink" class="btn  btn-default" style="width: 40px; margin-left: 18px;" id="exchange">↺</a>
                 </div>
+
+                <!--<div class="col-xs-1">-->
+                <div class="col-xs-1">
+                </div>
+                <!--</div>-->
             </div>
             <div class="row">
                 <div class="col-xs-8">
@@ -189,7 +196,7 @@
                 <div class="modal-body">
 
                     <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
-                    <div id="main" style="width: 100%;height:500px"></div>
+                    <div id="main" style="width: 1200px;height:500px"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
@@ -515,6 +522,12 @@
 
     $("#sprite").click(function(event) {
         self.location="index_test";
+    });
+    $("#exchange").click(function(event) {
+        var v1=$("#dep").val();
+        var v2=$("#arr").val();
+        $("#dep").val(v2).select2();
+        $("#arr").val(v1).select2();
     });
 </script>
 
